@@ -23,7 +23,7 @@ func main() {
 	printInfo := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime|log.Lshortfile)
 	printError := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
 
-	db, err := initdb("postgres://postgres:sasham@localhost/customersdb?sslmode=disable")
+	db, err := initdb("postgres://postgres:your_password@localhost/customersdb?sslmode=disable")
 
 	if err != nil {
 		printError.Fatal(err)
