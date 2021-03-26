@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <title>CRUD in Golang</title>
+     <style>
+.myheader {
+  padding: 50px 20px;
+  text-align: center;
+} 
+.myheader h1 {
+  font-family: 'Merriweather', serif;
+  position: relative;
+  color: #FCF2E5;
+  background: #90806A;
+  font-size: 2.5em;
+  font-weight: normal;
+  padding: 10px 40px;
+  display: inline-block;
+  margin: 0;
+  line-height: 1;
+}
+.myheader h1:before {
+  content: ""; 
+  position: absolute;
+  width: 100%;
+  height: 4px;
+  left: 0;
+  bottom: -15px;
+  background: #90806A;
+}
+.myheader h1:after {
+  content: ""; 
+  position: absolute;
+  height: 0;
+  width: 80%;
+  border-top: 10px solid #90806A;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -25px;
+}
+@media (max-width: 500px) {
+  .myheader h1 {font-size: 1.8em;}
+}
+@media (max-width: 400px) {
+  .myheader h1 {
+    font-size: 1.5em;
+    padding: 10px 30px;
+  }
+}
+
+
+table {
+  position: relative;
+  width: 900px;
+  font: 17px Calibri;
+  margin: 0 auto;
+}
+
+table, th, td {
+  border: solid 1px #DDD;
+  border-collapse: collapse;
+  padding: 2px 3px;
+  text-align: center;
+}
+      
+input[type='button'] {
+  font: 15px Calibri;
+  cursor: pointer;
+  border: none;
+  color: #FFF;
+} 
+        
+input[type='text'], select {
+  font: 17px Calibri;
+  text-align: center;
+  border: solid 1px #CCC;
+  width: auto;
+  padding: 2px 3px;
+}
+        
+
+.b1t1n {
+  text-decoration: none;
+  font: 15px Calibri;
+  cursor: pointer;
+  border: none;
+  color: #FFF;
+  display:block;
+  margin: 0 auto;
+  background-color: #44CCEB;
+}
+
+.b2t2n {
+  text-decoration: none;
+  font: 15px Calibri;
+  cursor: pointer;
+  border: none;
+  color: #FFF;
+  display:block;
+  margin: 0 auto;
+  background-color:#ED5650;
+}
+
+.b3t3n {
+  text-decoration: none;
+  font: 15px Calibri;
+  cursor: pointer;
+  border: none;
+  color: #FFF;
+  display:block;
+  margin: 0 auto;
+  background-color:#008000;
+}
+
+
+* 
+form {
+  position: relative;
+  width: 300px;
+  margin: 0 auto;
+  margin-bottom: 20px;
+}
+.d1 input {
+  width: 100%;
+  height: 42px;
+  padding-left: 10px;
+  border: 2px solid #7BA7AB;
+  border-radius: 5px;
+  outline: none;
+  color: #9E9C9C;
+}
+.d1 button {
+  position: absolute; 
+  top: 0;
+  right: 0px;
+  width: 42px;
+  height: 42px;
+  border: none;
+  background: #7BA7AB;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+}
+.d1 button:before {
+  content: "\f002";
+  font-family: FontAwesome;
+  font-size: 16px;
+  color: #FFFFFF;
+}
+
+
+.dropbtn {
+  padding: 5px;
+  cursor: pointer;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  width: 140px;
+}
+
+.dropbtn
+{
+  padding-left: 25px;
+  width: 40px;
+}
+
+.dropbtn::after {
+  background: rgba(0, 0, 0, 0) no-repeat scroll center center;
+  content: "";
+  height: 16px;
+  position: absolute;
+  right: 0;
+  top: 7px;
+  width: 16px;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 2px 0 2px 25px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+    </style> 
+</head>
+
+<body>
+
+  <div class="dropdown">
+    <div class="dropbtn">Eesti</div>
+    <div class="dropdown-content">
+      <a href="/ee">Eesti</a>
+      <a href="/">English</a>
+      <a href="/ru">Русский</a>
+    </div>
+  </div>
+
+  <div id="container" style="width:100%;"></div>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="myheader">
+        <h1>Simple web application with CRUD operations</h1>
+      </div>
+
+        <div class="d1">
+          <form method="post" action="/search_ee" class="form-inline">
+            
+            <input type="search" placeholder="Otsing" aria-label="Search" name="searchname" id="inputSearchName" value="">
+          
+            <button type="submit"></button>
+          </form>
+          
+        </div>
+
+        <div class="table-responsive">
+          <table class="table-responsive" id="myTable">
+            <thead>
+              <tr>
+                <th onclick="sortTable(0)">ID</th>
+                <th onclick="sortTable(1)">Eesnimi</th>
+                <th onclick="sortTable(2)">Perekonnanimi</th>
+                <th onclick="sortTable(3)">Sünniaeg</th>
+                <th onclick="sortTable(4)">Sugu</th>
+                <th onclick="sortTable(5)">E-post</th>
+                <th onclick="sortTable(6)">Aadress</th>
+                <th colspan="2"><a href="/add_ee" class="b3t3n">Lisa</a></th> 
+              </tr>
+            </thead>
+              <tbody> 
+              {{range .AllCustomers}}
+              <tr>
+                <td>{{.ID}}</td>
+                <td>{{.FirstName}}</td>
+                <td>{{.LastName}}</td>
+                <td>{{.BirthDateStr}}</td>
+                <td>{{.Gender}}</td>
+                <td>{{.Email}}</td>
+                <td>{{.Address}}</td>
+                <td><a href="/add_ee?id={{.ID}}" class="b1t1n">Muuda</a></td>
+                <td><a href="/delete_ee?id={{.ID}}" class="b2t2n">Kustuta</a></td> 
+              </tr>
+              {{end}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function sortTable(n) {
+      var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+        table = document.getElementById("myTable");
+        switching = true;
+        dir = "asc";
+        while (switching) {
+          switching = false;
+          rows = table.rows;
+          for (i = 1; i < (rows.length - 1); i++) {
+            shouldSwitch = false;
+            x = rows[i].getElementsByTagName("TD")[n];
+            y = rows[i + 1].getElementsByTagName("TD")[n];
+            if (dir == "asc") {
+              if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                shouldSwitch = true;
+                break;
+              }
+            } else if (dir == "desc") {
+              if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                shouldSwitch = true;
+                break;
+              }
+            }
+          }
+          if (shouldSwitch) {
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+            switchcount++;
+          }
+          else {
+            if (switchcount == 0 && dir == "asc") {
+              dir = "desc";
+              switching = true;
+            }
+          }
+        }
+    }
+  </script>
+
+</body>
+
+</html>

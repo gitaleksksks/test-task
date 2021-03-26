@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <title>CRUD in Golang</title>
+     <style>
+.myheader {
+  padding: 50px 20px;
+  text-align: center;
+} 
+.myheader h1 {
+  font-family: 'Merriweather', serif;
+  position: relative;
+  color: #FCF2E5;
+  background: #90806A;
+  font-size: 2.5em;
+  font-weight: normal;
+  padding: 10px 40px;
+  display: inline-block;
+  margin: 0;
+  line-height: 1;
+}
+.myheader h1:before {
+  content: ""; 
+  position: absolute;
+  width: 100%;
+  height: 4px;
+  left: 0;
+  bottom: -15px;
+  background: #90806A;
+}
+.myheader h1:after {
+  content: ""; 
+  position: absolute;
+  height: 0;
+  width: 80%;
+  border-top: 10px solid #90806A;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -25px;
+}
+@media (max-width: 500px) {
+  .myheader h1 {font-size: 1.8em;}
+}
+@media (max-width: 400px) {
+  .myheader h1 {
+    font-size: 1.5em;
+    padding: 10px 30px;
+  }
+}
+
+
+.dropbtn {
+  padding: 5px;
+  cursor: pointer;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  width: 140px;
+}
+
+.dropbtn
+{
+  padding-left: 25px;
+  width: 40px;
+}
+
+.dropbtn::after {
+  background: rgba(0, 0, 0, 0) no-repeat scroll center center;
+  content: "";
+  height: 16px;
+  position: absolute;
+  right: 0;
+  top: 7px;
+  width: 16px;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 2px 0 2px 25px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+
+h2{
+  background-color: #808080;
+  color: white;
+  text-align: center;
+  padding:6px;
+  width: 400px;
+  margin: 0 auto;
+  margin-bottom: 30px;
+}
+
+form {
+  margin: 0 auto;
+  width: 600px;
+  padding: 1em;
+  border: 1px solid #CCC;
+  border-radius: 1em;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+form li + li {
+  margin-top: 1em;
+}
+
+label {
+  display: inline-block;
+  width: 100px;
+  text-align: right;
+  margin-top: 20px; 
+}
+
+input,
+textarea {
+  font: 1em sans-serif;
+  width: 300px;
+  box-sizing: border-box;
+  border: 1px solid #999;
+  margin: 0 auto;
+}
+
+input:focus,
+textarea:focus {
+  border-color: #000;
+}
+
+textarea {
+  vertical-align: top;
+  height: 5em;
+}
+
+.button {
+  
+  display: inline-block;
+  background: #008000;
+  color: #fff;
+  padding: 12px;
+  border: none;
+  border-radius: 3px;
+  text-decoration: none;
+  font-family: Tahoma;
+  font-size: 18px;
+  line-height: 1;
+  font-weight: 100;
+  cursor: pointer;
+  width: 30%;
+  margin: 0 auto;
+  margin-top: 20px; 
+}
+
+.b2t2n {
+  
+  display: inline-block;
+  background: #42AAFF;
+  color: #fff;
+  padding: 12px;
+  border: none;
+  border-radius: 3px;
+  text-decoration: none;
+  font-family: Tahoma;
+  font-size: 18px;
+  line-height: 1;
+  font-weight: 100;
+  cursor: pointer;
+  width: 10%;
+  margin: 0 auto;
+  margin-top: 20px; 
+}
+    </style> 
+</head>
+
+<body>
+
+  <div class="dropdown">
+    <div class="dropbtn">Русский</div>
+    <div class="dropdown-content">
+      <a href="/add_ru">Русский</a>
+      <a href="/add">English</a>
+      <a href="/add_ee">Eesti</a>
+    </div>
+  </div>
+
+  <div id="container" style="width:100%;"></div>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="myheader">
+        <h1>Simple web application with CRUD operations</h1>
+      </div>
+
+      <h2>Добавить</h2>
+
+      
+      <form method="post" action="/save_ru" onsubmit="return validate()">
+        <center>
+        <div class="form-group">
+            <label for="inputID">ID</label>
+          <span class="form-control">{{.TargetCustomer.ID}}</span>
+          <input type="hidden" id="inputID" name="id" value="{{.TargetCustomer.ID}}" />
+        </div>
+    </center>
+
+
+    <center>
+        <div class="form-group">
+          <label for="inputFirstName">Имя</label>
+          <input class="form-control" id="inputfirstname" name="firstname" maxlength="100" placeholder="Имя"
+            value="{{.TargetCustomer.FirstName}}" />
+        </div>
+    </center>
+
+
+    <center>
+        <div class="form-group">
+          <label for="inputLastName">Фамилия</label>
+          <input class="form-control" id="inputlastname" name="lastname" maxlength="100" placeholder="Фамилия"
+            value="{{.TargetCustomer.LastName}}" />
+        </div>
+    </center>
+
+
+    <center>
+        <div class="form-group">
+          <label for="inputBirthDate">Дата рождения</label>
+          <input class="form-control" id="inputbirthdate" name="birthdate" size="12" placeholder="01 января 1991" required />
+        </div>
+    
+
+
+        <center>
+        <div class="form-group">
+            <label for="inputGender">Пол</label>
+          <select id="inputgender" name="gender" class="form-control" required>
+            <option>Мужской</option>
+            <option>Женский</option>
+          </select>
+        </div>
+    </center>
+
+        <center>
+        <div class="form-group">
+          <label for="inputEmail">Эл. почта</label>
+          <input class="form-control" id="inputemail" name="email" type="email" placeholder="Эл. почта"
+            value="{{ .TargetCustomer.Email}}" required />
+        </div>
+    </center>
+
+        <center>
+            <div class="form-group">
+            <label for="inputAddress">Адрес</label>
+          <input class="form-control" id="inputaddress" name="homeaddress" placeholder="Адрес"
+            value="{{ .TargetCustomer.Address}}" />
+        </div>
+    </center>
+
+        <center><button type="submit" class="button">Сохранить</button></center>
+      </form>
+
+      </div>
+      <center><a href="/ru" class="b2t2n">Главная</a></center>
+    </div>
+  </div>
+
+  <script>
+     function validate() {
+      var date = $('#inputBirthDate').val();
+      var momentDate = moment(date, 'YYYY-MM-DD');
+      var eighteenYearsAgo = moment().subtract(18, "years");
+      var sixtyYearsAgo = moment().subtract(60, "years");
+      var birthday = momentDate;
+
+      if (!birthday.isValid()) {
+        alert("Invalid date" + date);
+        return false;
+      }
+      else if (eighteenYearsAgo.isAfter(birthday) && !sixtyYearsAgo.isAfter(birthday)) {
+        return true;
+      }
+      else {
+        alert("Customer must be between 18 and 60 years. " + date);
+        return false;
+      }
+    }
+  </script>
+
+</body>
+
+</html>
