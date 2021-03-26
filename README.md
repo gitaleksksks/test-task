@@ -7,6 +7,7 @@
 
 # How to Use
 
+* Install programming language Go on your system. You can skip this step if already installed.
 * Install PostgreSQL on your system. You can skip this step if already installed.
 * Clone this repository.
 * Execute the `customers.sql` file into your PostgreSQL client. This will import sample database and tables that will be used for this example.
