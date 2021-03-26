@@ -23,8 +23,8 @@ func main() {
 
 	defer db.Close()
 
-	insertStmt1 := `insert into "customers"("firstname", "lastname", "birthdate", "gender", "email", "homeaddress") values('Ivan', 'Ivanov', '01 January 1991', 'Male', 'ivan@gmail.com', 'AddressOfIvan')`
-	_, e := db.Exec(insertStmt1)
+	insertStmt := `insert into "customers"("firstname", "lastname", "birthdate", "gender", "email", "homeaddress") values('Ivan', 'Ivanov', '01 January 1991', 'Male', 'ivan@gmail.com', 'AddressOfIvan')`
+	_, e := db.Exec(insertStmt)
 	CheckError(e)
 
 	insertDynStmt := `insert into "customers"("firstname", "lastname", "birthdate", "gender", "email", "homeaddress") values($1, $2, $3, $4, $5, $6)`
